@@ -21,7 +21,7 @@ namespace AkimaInterpolation
         int ny = 40; 
 
 
-        public List<double> interpp(List<double> _x, List<double> _y, List<double> _z,String duplicate = "error")
+        public List<double> interpp(List<double> _x, List<double> _y, List<double> _z, String duplicate = "error")
         {
             x = _x;
             y = _y;
@@ -92,6 +92,37 @@ namespace AkimaInterpolation
         void idcldp(int ndp0, int ncp0, double jwipc)
         {
 
+        }
+
+        void idptip(List<double> XD, List<double> YD, List<double> ZD, int NDP, int NT, List<int> IPT, int NL, List<int> IPL, List<double> PDD, int ITI, List<double> XII, List<double>  YII, List<double> ZII, bool MISSII) {
+            // THIS SUBROUTINE PERFORMS PUNCTUAL INTERPOLATION OR EXTRAPOLA-
+            // TION, I.E., DETERMINES THE Z VALUE AT A POINT.
+            //
+            // THE INPUT PARAMETERS ARE
+            //     XD,YD,ZD = ARRAYS OF DIMENSION NDP CONTAINING THE X,
+            //           Y, AND Z COORDINATES OF THE DATA POINTS, WHERE
+            //           NDP IS THE NUMBER OF THE DATA POINTS,
+            //     NT  = NUMBER OF TRIANGLES,
+            //     IPT = INTEGER ARRAY OF DIMENSION 3*NT CONTAINING THE
+            //           POINT NUMBERS OF THE VERTEXES OF THE TRIANGLES,
+            //     NL  = NUMBER OF BORDER LINE SEGMENTS,
+            //     IPL = INTEGER ARRAY OF DIMENSION 3*NL CONTAINING THE
+            //           POINT NUMBERS OF THE END POINTS OF THE BORDER
+            //           LINE SEGMENTS AND THEIR RESPECTIVE TRIANGLE
+            //           NUMBERS,
+            //     PDD = ARRAY OF DIMENSION 5*NDP CONTAINING THE PARTIAL
+            //           DERIVATIVES AT THE DATA POINTS,
+            //     ITI = TRIANGLE NUMBER OF THE TRIANGLE IN WHICH LIES
+            //           THE POINT FOR WHICH INTERPOLATION IS TO BE
+            //           PERFORMED,
+            //     XII,YII = X AND Y COORDINATES OF THE POINT FOR WHICH
+            //           INTERPOLATION IS TO BE PERFORMED.
+            //
+            // THE OUTPUT PARAMETERs are
+            //     ZII     = INTERPOLATED Z VALUE.
+            //     MISSII = LOCIGAL INDICATING MISSING VALUE
+            //
+            // DECLARATION STATEMENTS
         }
 
         public List<double> seq(double min, double max, int length)

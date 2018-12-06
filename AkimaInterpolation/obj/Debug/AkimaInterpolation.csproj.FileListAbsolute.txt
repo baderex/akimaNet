@@ -4,3 +4,6 @@ C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\bin\De
 C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\bin\Debug\AkimaInterpolation.pdb
 C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\obj\Debug\AkimaInterpolation.exe
 C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\obj\Debug\AkimaInterpolation.pdb
+C:\Users\Eritrea\Documents\GitHub\akimaNet\AkimaInterpolation\bin\Debug\AkimaInterpolation.exe.config
+C:\Users\Eritrea\Documents\GitHub\akimaNet\AkimaInterpolation\obj\Debug\AkimaInterpolation.exe
+C:\Users\Eritrea\Documents\GitHub\akimaNet\AkimaInterpolation\obj\Debug\AkimaInterpolation.pdb
