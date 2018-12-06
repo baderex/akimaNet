@@ -1,0 +1,6 @@
+C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\bin\Debug\AkimaInterpolation.exe.config
+C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\obj\Debug\AkimaInterpolation.csprojResolveAssemblyReference.cache
+C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\bin\Debug\AkimaInterpolation.exe
+C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\bin\Debug\AkimaInterpolation.pdb
+C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\obj\Debug\AkimaInterpolation.exe
+C:\Users\Bader\Desktop\Work\heatmap\AkimaInterpolation\AkimaInterpolation\obj\Debug\AkimaInterpolation.pdb
