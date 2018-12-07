@@ -94,7 +94,8 @@ namespace AkimaInterpolation
 
         }
 
-        void idptip(List<double> XD, List<double> YD, List<double> ZD, int NDP, int NT, List<int> IPT, int NL, List<int> IPL, List<double> PDD, int ITI, List<double> XII, List<double>  YII, List<double> ZII, bool MISSII) {
+        void idptip(List<double> XD, List<double> YD, List<double> ZD, int NDP, int NT, List<int> IPT, int NL, List<int> IPL, List<double> PDD, int ITI, double XII, double  YII, out double ZII, out bool MISSII)
+        {
             // THIS SUBROUTINE PERFORMS PUNCTUAL INTERPOLATION OR EXTRAPOLA-
             // TION, I.E., DETERMINES THE Z VALUE AT A POINT.
             //
@@ -137,14 +138,18 @@ namespace AkimaInterpolation
             List<double> LU = new List<double>();
             List<double> LV = new List<double>();
 
-            // issue: value by reference globaly
+            // ?? initializing output
+            MISSII = false;
+            ZII = double.NaN;
+
+            // ??: value by reference globaly
             //COMMON / IDPI / ITPV
             int ITPV = new int();
 
-            // issue: value by reference locally
+            // ??: value by reference locally
             //EQUIVALENCE(P5, P50)
-            List<double> P5 = new List<double>();
-            List<double> P50 = new List<double>();
+            double P5 = new double();
+            double P50 = new double();
 
             // PRELIMINARY PROCESSING
             int IT0 = ITI;
@@ -155,12 +160,140 @@ namespace AkimaInterpolation
                 // CALCULATION OF ZII BY INTERPOLATION.
                 // CHECKS IF THE NECESSARY COEFFICIENTS HAVE BEEN CALCULATED.
                 if (IT0 == ITPV)
-                { }
+                {
+                    // CONVERTS XII AND YII TO U - V SYSTEM.
+                    double DX = XII - X0;
+                    double DY = YII - Y0;
+                    double U = AP * DX + BP * DY;
+                    double V = CP * DX + DP * DY;
+                    // EVALUATES THE POLYNOMIAL.
+                    double P0 = P00 + V * (P01 + V * (P02 + V * (P03 + V * (P04 + V * P05))));
+                    double P1 = P10 + V * (P11 + V * (P12 + V * (P13 + V * P14)));
+                    double P2 = P20 + V * (P21 + V * (P22 + V * P23));
+                    double P3 = P30 + V * (P31 + V * P32);
+                    double P4 = P40 + V * P41;
+                    ZII = P0 + U * (P1 + U * (P2 + U * (P3 + U * (P4 + U * P5))));
+                    MISSII = false;
+                    return;
+                }
                 else
                 { };
 
             } else {
+                // EXTRAPOLATION OR MISSING VALUE WANTED?
+                // ?? if MISSII get initialized as F, then this part is useless. It also might be used as an input...
+                if (MISSII)
+                {
+                    ZII = 0;
+                    return; // ?? correct usage?
+                }
 
+                int IL1 = IT0 / NTL;
+                int IL2 = IT0 - IL1 * NTL;
+
+                if (IL1 == IL2) {
+                    // CALCULATION OF ZII BY EXTRAPOLATION IN THE RECTANGLE.
+                    // CHECKS IF THE NECESSARY COEFFICIENTS HAVE BEEN CALCULATED.
+                    if (IT0 == ITPV)
+                    {
+                        //GO TO 50
+                    }
+                    else
+                    {
+                        // LOADS COORDINATE AND PARTIAL DERIVATIVE VALUES AT THE END
+                        // POINTS OF THE BORDER LINE SEGMENT.
+                        int JIPL = 3 * (IL1 - 1);
+                        int JPD = 0;
+
+                        //initialie intermediate variables
+                        int IDP;
+                        int JPDD;
+
+                        //DO 43  I = 1,2
+                        JIPL = JIPL + 1;
+                        IDP = IPL[JIPL];
+                        X[I] = XD[IDP];
+                        Y[I] = YD[IDP];
+                        Z[I] = ZD[IDP];
+                        JPDD = 5 * (IDP - 1);
+                        //DO 42  KPD = 1,5
+                        JPD = JPD + 1;
+                        JPDD = JPDD + 1;
+                        PD[JPD] = PDD[JPDD];
+                        //  CONTINUE
+                        // CONTINUE
+
+                        // DETERMINES THE COEFFICIENTS FOR THE COORDINATE SYSTEM
+                        // TRANSFORMATION FROM THE X-Y SYSTEM TO THE U-V SYSTEM
+                        // AND VICE VERSA.
+                        X0 = X(1);
+      Y0 = Y(1)
+      A = Y(2) - Y(1)
+      B = X(2) - X(1)
+      C = -B
+      D = A
+      AD = A * D
+      BC = B * C
+      DLT = AD - BC
+      AP = D / DLT
+      BP = -B / DLT
+      CP = -BP
+      DP = AP
+C CONVERTS THE PARTIAL DERIVATIVES AT THE END POINTS OF THE
+C BORDER LINE SEGMENT FOR THE U-V COORDINATE SYSTEM.
+   45 AA = A * A
+      ACT2 = 2.0 * A * C
+      CC = C * C
+      AB = A * B
+      ADBC = AD + BC
+      CD = C * D
+      BB = B * B
+      BDT2 = 2.0 * B * D
+      DD = D * D
+      DO 46  I = 1,2
+        JPD = 5 * I
+        ZU(I) = A * PD(JPD - 4) + C * PD(JPD - 3)
+        ZV(I) = B * PD(JPD - 4) + D * PD(JPD - 3)
+        ZUU(I) = AA * PD(JPD - 2) + ACT2 * PD(JPD - 1) + CC * PD(JPD)
+        ZUV(I) = AB * PD(JPD - 2) + ADBC * PD(JPD - 1) + CD * PD(JPD)
+        ZVV(I) = BB * PD(JPD - 2) + BDT2 * PD(JPD - 1) + DD * PD(JPD)
+   46 CONTINUE
+C CALCULATES THE COEFFICIENTS OF THE POLYNOMIAL.
+   47 P00 = Z(1)
+      P10 = ZU(1)
+      P01 = ZV(1)
+      P20 = 0.5 * ZUU(1)
+      P11 = ZUV(1)
+      P02 = 0.5 * ZVV(1)
+      H1 = Z(2) - P00 - P01 - P02
+      H2 = ZV(2) - P01 - ZVV(1)
+      H3 = ZVV(2) - ZVV(1)
+      P03 = 10.0 * H1 - 4.0 * H2 + 0.5 * H3
+      P04 = -15.0 * H1 + 7.0 * H2 - H3
+      P05 = 6.0 * H1 - 3.0 * H2 + 0.5 * H3
+      H1 = ZU(2) - P10 - P11
+      H2 = ZUV(2) - P11
+      P12 = 3.0 * H1 - H2
+      P13 = -2.0 * H1 + H2
+      P21 = 0.0
+      P23 = -ZUU(2) + ZUU(1)
+      P22 = -1.5 * P23
+      ITPV = IT0
+C CONVERTS XII AND YII TO U - V SYSTEM.
+   50 DX = XII - X0
+      DY = YII - Y0
+      U = AP * DX + BP * DY
+      V = CP * DX + DP * DY
+C EVALUATES THE POLYNOMIAL.
+   51 P0 = P00 + V * (P01 + V * (P02 + V * (P03 + V * (P04 + V * P05))))
+      P1 = P10 + V * (P11 + V * (P12 + V * P13))
+      P2 = P20 + V * (P21 + V * (P22 + V * P23))
+      ZII = P0 + U * (P1 + U * P2)
+      RETURN
+                    }
+                } else {
+                    //GO TO 60
+                }
             };
 
 
