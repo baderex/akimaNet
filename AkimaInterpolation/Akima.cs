@@ -121,8 +121,49 @@ namespace AkimaInterpolation
             // THE OUTPUT PARAMETERs are
             //     ZII     = INTERPOLATED Z VALUE.
             //     MISSII = LOCIGAL INDICATING MISSING VALUE
-            //
+            
+
             // DECLARATION STATEMENTS
+            List<double> X = new List<double>(3);
+            List<double> Y = new List<double>(3);
+            List<double> Z = new List<double>(3);
+            List<double> PD = new List<double>(15);
+            List<double> ZU = new List<double>(3);
+            List<double> ZV = new List<double>(3);
+            List<double> ZUU = new List<double>(3);
+            List<double> ZUV = new List<double>(3);
+            List<double> ZVV = new List<double>(3);
+
+            List<double> LU = new List<double>();
+            List<double> LV = new List<double>();
+
+            // issue: value by reference globaly
+            //COMMON / IDPI / ITPV
+            int ITPV = new int();
+
+            // issue: value by reference locally
+            //EQUIVALENCE(P5, P50)
+            List<double> P5 = new List<double>();
+            List<double> P50 = new List<double>();
+
+            // PRELIMINARY PROCESSING
+            int IT0 = ITI;
+            int NTL = NT + NL;
+
+            if (IT0 <= NTL)
+            {
+                // CALCULATION OF ZII BY INTERPOLATION.
+                // CHECKS IF THE NECESSARY COEFFICIENTS HAVE BEEN CALCULATED.
+                if (IT0 == ITPV)
+                { }
+                else
+                { };
+
+            } else {
+
+            };
+
+
         }
 
         public List<double> seq(double min, double max, int length)
